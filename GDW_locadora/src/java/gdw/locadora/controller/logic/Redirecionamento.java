@@ -7,7 +7,6 @@ package gdw.locadora.controller.logic;
 
 import gdw.locadora.model.ItemConfortoSeguranca;
 import gdw.locadora.model.Marca;
-import gdw.locadora.model.dao.ClienteDAO;
 import gdw.locadora.model.dao.ItemConfortoSegurancaDAO;
 import gdw.locadora.model.dao.MarcaDAO;
 import gdw.locadora.util.DAOFactory;
@@ -41,6 +40,8 @@ public class Redirecionamento implements ControllerLogic {
             request.getRequestDispatcher("Controller?acao=ListarCliente").forward(request, response);
         } else if (page.equals("listar_funcionario")) {
             request.getRequestDispatcher("Controller?acao=ListarFuncionario").forward(request, response);
+        } else if (page.equals("listar_veiculo")) {
+            request.getRequestDispatcher("Controller?acao=ListarVeiculo").forward(request, response);
         } else {
             request.getRequestDispatcher(page).forward(request, response);
         }

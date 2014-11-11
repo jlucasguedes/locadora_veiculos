@@ -7,7 +7,6 @@ package gdw.locadora.model.dao;
 
 import gdw.locadora.model.ItemConfortoSeguranca;
 import gdw.locadora.model.Veiculo;
-import gdw.locadora.util.ConnectionFactory;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -47,8 +46,6 @@ public class JDBCVeiculoDAO implements VeiculoDAO {
 
             ps.executeUpdate();
 
-            ps.close();
-
             this.inserirItensConfortoSeguranca(veiculo);
 
         } catch (SQLException ex) {
@@ -56,16 +53,9 @@ public class JDBCVeiculoDAO implements VeiculoDAO {
             throw new RuntimeException("Erro ao inserir veiculo", ex);
         } finally {
             try {
-                if (con != null && !con.isClosed()) {
-                    con.close();
-                }
                 if (ps != null && !ps.isClosed()) {
                     ps.close();
                 }
-                if (rs != null && !rs.isClosed()) {
-                    rs.close();
-                }
-
             } catch (SQLException ex) {
                 Logger.getLogger(JDBCVeiculoDAO.class.getName()).log(Level.SEVERE, null, ex);
                 throw new RuntimeException("Erro ao fechar conexao em JDBCVeiculoDAO", ex);
@@ -94,34 +84,48 @@ public class JDBCVeiculoDAO implements VeiculoDAO {
                 v.getModelo().setId(rs.getInt("modelo_id"));
                 v.getMotorizacao().setId(rs.getInt("motorizacao_id"));
             }
-            
+
             v.setIcs(this.listarItemConfortoSegurancaPorVeiculo(id));
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(JDBCVeiculoDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if (ps != null && !ps.isClosed()) {
+                    ps.close();
+                }
+                if (rs != null && !rs.isClosed()) {
+                    rs.close();
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(JDBCVeiculoDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
         }
         return v;
     }
 
     private int lerIdVeiculo() {
+        PreparedStatement pstmt = null;
+        ResultSet res = null;
         try {
             SQL = "SELECT MAX(id) as id FROM veiculo";
 
-            ps = con.prepareStatement(SQL);
+            pstmt = con.prepareStatement(SQL);
 
-            rs = ps.executeQuery();
-            rs.next();
-            return rs.getInt("id");
+            res = pstmt.executeQuery();
+            res.next();
+            return res.getInt("id");
         } catch (SQLException ex) {
             Logger.getLogger(JDBCVeiculoDAO.class.getName()).log(Level.SEVERE, null, ex);
             throw new RuntimeException("Erro ao pegar o ultimo Veiculo inserido", ex);
         } finally {
             try {
-                if(ps != null && ps.isClosed()) {
-                    ps.close();
+                if (pstmt != null && pstmt.isClosed()) {
+                    pstmt.close();
                 }
-                if(rs != null && rs.isClosed()) {
-                    rs.close();
+                if (res != null && res.isClosed()) {
+                    res.close();
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(JDBCVeiculoDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -130,8 +134,9 @@ public class JDBCVeiculoDAO implements VeiculoDAO {
     }
 
     private void inserirItensConfortoSeguranca(Veiculo veiculo) {
-        PreparedStatement pstmt = null;
         
+        PreparedStatement pstmt = null;
+
         try {
             SQL = "INSERT INTO veiculo_ics(veiculo_id, itens_conforto_seguranca_id) VALUES(?,?)";
 
@@ -149,8 +154,8 @@ public class JDBCVeiculoDAO implements VeiculoDAO {
             throw new RuntimeException("Erro ao inserir a List<ItemConfortoSeguranca>", ex);
         } finally {
             try {
-                if(ps != null && ps.isClosed()) {
-                    ps.close();
+                if (pstmt != null && pstmt.isClosed()) {
+                    pstmt.close();
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(JDBCVeiculoDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -158,12 +163,39 @@ public class JDBCVeiculoDAO implements VeiculoDAO {
         }
     }
 
+    private void excluirItensConfortoSegurança(int id) {
+
+        PreparedStatement pstmt = null;
+
+        try {
+
+            SQL = "DELETE FROM veiculos_ics WHERE veiculo_id = ?";
+
+            pstmt = con.prepareStatement(SQL);
+
+            pstmt.setInt(1, id);
+
+            pstmt.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBCVeiculoDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if (pstmt != null && !pstmt.isClosed()) {
+                    pstmt.close();
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(JDBCVeiculoDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+    }
+
     private List<ItemConfortoSeguranca> listarItemConfortoSegurancaPorVeiculo(int idVeiculo) {
         List<ItemConfortoSeguranca> itemConfortoSegurancas = new ArrayList<ItemConfortoSeguranca>();
         PreparedStatement pstmt = null;
         ResultSet resultado = null;
         try {
-            
+
             SQL = "SELECT ics.id, ics.descricao FROM itens_conforto_seguranca ics INNER JOIN veiculo_ics vi ON ics.id = vi.itens_conforto_seguranca_id where vi.veiculo_id = ? ORDER BY vi.itens_conforto_seguranca_id ASC;";
 
             pstmt = con.prepareStatement(SQL);
@@ -181,18 +213,104 @@ public class JDBCVeiculoDAO implements VeiculoDAO {
             Logger.getLogger(JDBCVeiculoDAO.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             try {
-                if(ps != null && !ps.isClosed()) {
-                    ps.close();
+                if (pstmt != null && !pstmt.isClosed()) {
+                    pstmt.close();
                 }
-                if(rs != null && !rs.isClosed()) {
-                    rs.close();
+                if (resultado != null && !resultado.isClosed()) {
+                    resultado.close();
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(JDBCVeiculoDAO.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-           
+
         return itemConfortoSegurancas;
+    }
+
+    @Override
+    public void excluir(int id) {
+        try {
+            SQL = "DELETE FROM veiculo WHERE id = ?";
+
+            ps = con.prepareStatement(SQL);
+
+            ps.setInt(1, id);
+
+            ps.executeUpdate();
+
+            this.excluirItensConfortoSegurança(id);
+
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBCVeiculoDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new RuntimeException("Erro ao excluir Veiculo e Itens de Conforto e Segurança", ex);
+        } finally {
+            try {
+                if (ps != null && !ps.isClosed()) {
+                    ps.close();
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(JDBCVeiculoDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+
+    }
+
+    @Override
+    public List<Veiculo> listar() {
+        List<Veiculo> veiculos = new ArrayList<Veiculo>();
+
+        try {
+            SQL = "SELECT v.id, v.placa, v.renavam, v.chassi, ma.id as marca_id, ma.nome_marca, mo.id as modelo_id, mo.nome_modelo, mt.id AS motorizacao_id, mt.motorizacao FROM veiculo v INNER JOIN marca ma ON ma.id = v.marca_id INNER JOIN modelo mo ON mo.id = v.modelo_id INNER JOIN motorizacao mt ON mt.id = v.motorizacao_id";
+
+            ps = con.prepareStatement(SQL);
+
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Veiculo v = new Veiculo();
+                v.setId(rs.getInt("id"));
+                v.setPlaca(rs.getString("placa"));
+                v.setRenavam(rs.getString("renavam"));
+                v.setChassi(rs.getString("chassi"));
+                v.getMarca().setId(rs.getInt("marca_id"));
+                v.getMarca().setNomeMarca(rs.getString("nome_marca"));
+                v.getModelo().setId(rs.getInt("modelo_id"));
+                v.getModelo().setNomeModelo(rs.getString("nome_modelo"));
+                v.getMotorizacao().setId(rs.getInt("motorizacao_id"));
+                v.getMotorizacao().setMotorizacao(rs.getString("motorizacao"));
+
+                v.setIcs(this.listarItemConfortoSegurancaPorVeiculo(v.getId()));
+                
+                veiculos.add(v);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBCVeiculoDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new RuntimeException("Erro ao listar Veiculos e Itens de Conforto e Segurança", ex);
+        } finally {
+            try {
+                if (ps != null && !ps.isClosed()) {
+                    ps.close();
+                }
+                if (rs != null && !rs.isClosed()) {
+                    rs.close();
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(JDBCVeiculoDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+        return veiculos;
+    }
+
+    @Override
+    public void atualizar(Veiculo veiculo) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Veiculo buscar(String placa) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

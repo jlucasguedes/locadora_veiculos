@@ -6,6 +6,7 @@
 package gdw.locadora.model.dao;
 
 import gdw.locadora.model.Veiculo;
+import java.util.List;
 
 /**
  *
@@ -15,5 +16,14 @@ public interface VeiculoDAO {
 
     public void inserir(Veiculo veiculo);
 
+    public void excluir(int id);
+
+    public List<Veiculo> listar();
+
+    public void atualizar(Veiculo veiculo);
+
     public Veiculo buscar(int id);
+
+    public Veiculo buscar(String placa);
+
 }

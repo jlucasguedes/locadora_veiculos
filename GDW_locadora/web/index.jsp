@@ -69,7 +69,7 @@
                                         <li class="divider"></li>
                                         <li><a href="#">1.3.2 - Editar Veículo</a></li>
                                         <li class="divider"></li>
-                                        <li><a href="#">1.3.3 - Listar Veículos</a></li>                                        
+                                        <li><a href="Controller?acao=Redirecionamento&page=listar_veiculo">1.3.3 - Listar Veículos</a></li>                                        
                                     </ul>
                                 </li>
                             </ul>

@@ -5,7 +5,8 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<jsp:useBean id="funcionario" scope="request" class="gdw.locadora.model.Funcionario" />
+<jsp:useBean id="veiculo" scope="request" class="gdw.locadora.model.Veiculo" />
+<jsp:useBean id="itemConfortoSeguranca" scope="request" class="gdw.locadora.model.ItemConfortoSeguranca" />
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
@@ -21,7 +22,7 @@
             html, body { height: 100%; }
             section.container { padding-top: 60px; text-align: center; width: 100%; height: 100%; background: #ddd; }
             #content-main { padding: 120px 0 10px 0; }
-            #perfil-completo tbody tr td:nth-child(1) { font-weight: bold; }
+            #perfil-completo tbody tr td.negrito:nth-child(1) { font-weight: bold; }
             #perfil-completo td { border: none; }
             
 
@@ -101,28 +102,34 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>NOME</th>
-                                <th>CPF</th>
-                                <th>TELEFONE</th>
-                                <th>OPÇOES</th>
+                                <th>PLACA</th>
+                                <th>RENAVAM</th>
+                                <th>CHASSI</th>
+                                <th>MARCA</th>
+                                <th>MODELO</th>
+                                <th>OPÇÕES</th>
                             </tr>
                         </thead>
                         <tfoot>
                             <tr>
                                 <th>ID</th>
-                                <th>NOME</th>
-                                <th>CPF</th>
-                                <th>TELEFONE</th>
-                                <th>OPÇOES</th>
+                                <th>PLACA</th>
+                                <th>RENAVAM</th>
+                                <th>CHASSI</th>
+                                <th>MARCA</th>
+                                <th>MODELO</th>
+                                <th>OPÇÕES</th>
                             </tr>
                         </tfoot>
                         <tbody>
-                            <c:forEach items="${funcionarios}" var="funcionario">
+                            <c:forEach items="${veiculos}" var="veiculo">
                                 <tr>
-                                    <td>${funcionario.id}</td>
-                                    <td>${funcionario.nome}</td>
-                                    <td>${funcionario.cpf}</td>
-                                    <td>${funcionario.telefone}</td>
+                                    <td>${veiculo.id}</td>
+                                    <td>${veiculo.placa}</td>
+                                    <td>${veiculo.renavam}</td>
+                                    <td>${veiculo.chassi}</td>
+                                    <td>${veiculo.marca.nomeMarca}</td>
+                                    <td>${veiculo.modelo.nomeModelo}</td>
                                     <td>
                                         <div class="btn-group">
                                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
@@ -130,7 +137,7 @@
                                             </button>
                                             <ul class="dropdown-menu" style="width: 40px">
                                                 <li>                                                   
-                                                    <a href="#" data-toggle="modal" data-target="#modalClienteID${funcionario.id}" ><i class="glyphicon glyphicon-user"></i> Perfil Completo</a>
+                                                    <a href="#" data-toggle="modal" data-target="#modalClienteID${veiculo.id}" ><i class="glyphicon glyphicon-user"></i> Perfil Completo</a>
                                                 </li>
                                                 <li>
                                                 </li>
@@ -141,50 +148,55 @@
                             </c:forEach>
                         </tbody>
                     </table>
-                    <c:forEach items="${funcionarios}" var="funcionario">
+                    <c:forEach items="${veiculos}" var="veiculo">
                         <!-- Modal -->
-                        <div class="modal fade" id="modalClienteID${funcionario.id}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal fade" id="modalClienteID${veiculo.id}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Fechar</span></button>
-                                        <h4 class="modal-title" id="myModalLabel">${funcionario.nome}</h4>
+                                        <h4 class="modal-title" id="myModalLabel">Veículo ID: ${veiculo.id}</h4>
                                     </div>
                                     <div class="modal-body">
                                         <table class="table table-condensed" id="perfil-completo">
                                             <tbody>
                                                 <tr>
-                                                    <td>Nome: </td>
-                                                    <td>${funcionario.nome}</td>
+                                                    <td class="negrito">ID: </td>
+                                                    <td>${veiculo.id}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Data de nascimento: </td>                                                    
-                                                    <td><fmt:formatDate pattern="dd/MM/yyyy" value="${funcionario.dataDeNascimento}"/></td>
+                                                    <td class="negrito">Placa: </td>
+                                                    <td>${veiculo.placa}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td>CPF: </td>
-                                                    <td>${funcionario.cpf}</td>
+                                                    <td class="negrito">Renavam: </td>                                                    
+                                                    <td>${veiculo.renavam}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td>RG: </td>
-                                                    <td>${funcionario.rg}</td>
+                                                    <td class="negrito">Chassi: </td>
+                                                    <td>${veiculo.chassi}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Endereço: </td>
-                                                    <td>${funcionario.endereco}</td>
+                                                    <td class="negrito">Marca: </td>
+                                                    <td>${veiculo.marca.nomeMarca}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Telefone: </td>
-                                                    <td>${funcionario.telefone}</td>
+                                                    <td class="negrito">Modelo: </td>
+                                                    <td>${veiculo.modelo.nomeModelo}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Data de Admissão: </td>
-                                                    <td><fmt:formatDate pattern="dd/MM/yyyy" value="${funcionario.dataDeAdmissao}"/></td>
+                                                    <td class="negrito">Motorizacao: </td>
+                                                    <td>${veiculo.motorizacao.motorizacao}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Salário: </td>
-                                                    <td>${funcionario.salario}</td>
+                                                    <td rowspan="${veiculo.ics.size()+1}" class="negrito">Itens Conforto e Segurança</td>                                                    
                                                 </tr>
+                                                <c:forEach items="${veiculo.ics}" var="itemConfortoSeguranca">
+                                                    <tr>
+                                                        <td class="sem-negrito">${itemConfortoSeguranca.descricao}</td>
+                                                    </tr>
+                                                </c:forEach>
+
                                             </tbody>
                                         </table>                                        
                                     </div>
