@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context antiJARLocking="true" path="/GDW_locadora">
+    <Resource name="jdbc/gdw_locadora"
+              auth="Container"
+              scope="Shareable"
+              type="javax.sql.DataSource"                   
+              username="postgres"
+              password="lucas123"        
+              driverClassName="org.postgresql.Driver"
+              url="jdbc:postgresql://localhost:5432/gdw_locadora"                            
+              maxActive="100"
+              maxIdle="30"
+              maxWait="10000"
+    />
+</Context>

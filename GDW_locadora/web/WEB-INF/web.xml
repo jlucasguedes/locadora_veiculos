@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+    <servlet>
+        <servlet-name>Controller</servlet-name>
+        <servlet-class>gdw.locadora.controller.Controller</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Página de Cadastro de Cliente</servlet-name>
+        <jsp-file>/page/cadastro/cadastro_cliente.jsp</jsp-file>
+    </servlet>
+    <servlet>
+        <servlet-name>Página de Cadastro de Funcionário</servlet-name>
+        <jsp-file>/page/cadastro/cadastro_funcionario.jsp</jsp-file>
+    </servlet>
+    <servlet>
+        <servlet-name>Página de Cadastro de Veiculo</servlet-name>
+        <jsp-file>/page/cadastro/cadastro_veiculo.jsp</jsp-file>
+    </servlet>
+    <servlet>
+        <servlet-name>Index</servlet-name>
+        <jsp-file>/index.jsp</jsp-file>
+    </servlet>
+    <servlet>
+        <servlet-name>Página de Locação</servlet-name>
+        <jsp-file>/page/controle/locacao.jsp</jsp-file>
+    </servlet>
+    <servlet>
+        <servlet-name>BuscaClienteTeste</servlet-name>
+        <jsp-file>/BuscaClienteTeste.jsp</jsp-file>
+    </servlet>
+    <servlet>
+        <servlet-name>comboGrid</servlet-name>
+        <jsp-file>/combogrid.jsp</jsp-file>
+    </servlet>
+    <servlet>
+        <servlet-name>Página de Edição de CLiente</servlet-name>
+        <jsp-file>/page/edicao/editar_cliente.jsp</jsp-file>
+    </servlet>
+    <servlet>
+        <servlet-name>Página de Listagem de Cliente</servlet-name>
+        <jsp-file>/page/listagem/listar_cliente.jsp</jsp-file>
+    </servlet>
+    <servlet>
+        <servlet-name>Página de Edição de Funcionário</servlet-name>
+        <jsp-file>/page/edicao/editar_funcionario.jsp</jsp-file>
+    </servlet>
+    <servlet>
+        <servlet-name>Página de Listagem de Funcionário</servlet-name>
+        <jsp-file>/page/listagem/listar_funcionario.jsp</jsp-file>
+    </servlet>
+    <servlet>
+        <servlet-name>Página de Listagem de Veículo</servlet-name>
+        <jsp-file>/page/listagem/listar_veiculo.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Controller</servlet-name>
+        <url-pattern>/Controller</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Página de Cadastro de Cliente</servlet-name>
+        <url-pattern>/cadastro_cliente</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Página de Cadastro de Funcionário</servlet-name>
+        <url-pattern>/cadastro_funcionario</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Página de Cadastro de Veiculo</servlet-name>
+        <url-pattern>/cadastro_veiculo</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Index</servlet-name>
+        <url-pattern>/home</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Página de Locação</servlet-name>
+        <url-pattern>/locacao</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BuscaClienteTeste</servlet-name>
+        <url-pattern>/busca</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>comboGrid</servlet-name>
+        <url-pattern>/combogrid</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Página de Edição de CLiente</servlet-name>
+        <url-pattern>/editar_cliente</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Página de Listagem de Cliente</servlet-name>
+        <url-pattern>/listar_cliente</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Página de Edição de Funcionário</servlet-name>
+        <url-pattern>/editar_funcionario</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Página de Listagem de Funcionário</servlet-name>
+        <url-pattern>/listar_funcionario</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Página de Listagem de Veículo</servlet-name>
+        <url-pattern>/listar_veiculo</url-pattern>
+    </servlet-mapping>
+    <session-config>
+        <session-timeout>
+            30
+        </session-timeout>
+    </session-config>
+    <welcome-file-list>
+        <welcome-file>home</welcome-file>
+    </welcome-file-list>
+    <security-constraint>
+        <display-name>AdminConstraint</display-name>
+        <web-resource-collection>
+            <web-resource-name>Admin</web-resource-name>
+            <description/>
+            <url-pattern>*.jsp</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>admin-gui</role-name>
+            <role-name>manager-gui</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <login-config>
+        <auth-method>FORM</auth-method>
+        <form-login-config>
+            <form-login-page>/login.jsp</form-login-page>
+            <form-error-page>/erro.jsp</form-error-page>
+        </form-login-config>
+    </login-config>
+    <security-role>
+        <description>administrador</description>
+        <role-name>admin-gui</role-name>
+    </security-role>
+    <security-role>
+        <description>mangaer</description>
+        <role-name>manager-gui</role-name>
+    </security-role>
+    <resource-ref>
+        <description>Connection Pool</description>
+        <res-ref-name>jdbc/gdw_locadora</res-ref-name>
+        <res-type>javax.sql.DataSource</res-type>
+        <res-auth>Container</res-auth>
+        <res-sharing-scope>Shareable</res-sharing-scope>
+    </resource-ref>
+</web-app>

@@ -1,0 +1,72 @@
+/* 
+    Created on : 04/10/2014, 22:15:52
+    Author     : lucas
+*/
+
+* { font-family: 'Tahoma', 'Hélvetica', sans-serif; }
+
+/* ---------------------- MENU -------------------------------- */
+
+nav ul ul { display: none; }
+nav ul li:hover > ul { display: block; }
+nav ul {
+    margin: 0px 0px; /* Espaço entre menu e sub-menu */
+    background: #efefef; 
+    background: linear-gradient(top, #efefef 0%, #bbbbbb 100%);  
+    background: -moz-linear-gradient(top, #efefef 0%, #bbbbbb 100%); 
+    background: -webkit-linear-gradient(top, #efefef 0%,#bbbbbb 100%); 
+    box-shadow: 0px 0px 9px rgba(0,0,0,0.15);
+    padding: 0 20px;
+    border-radius: 0px 0px 10px 10px;  
+    list-style: none;
+    position: relative;
+}
+nav ul:after { content: ""; clear: both; display: block; }
+nav ul li { float: left; }
+nav ul li:hover {
+    background: #43bf43;
+    background: linear-gradient(top, #228622 0%, #43bf43 40%);
+    background: -moz-linear-gradient(top, #228622 0%, #43bf43 40%);
+    background: -webkit-linear-gradient(top, #228622 0%,#43bf43 40%);
+}
+nav ul li:hover a { color: #fff; }
+nav ul li a { display: block; padding: 15px 40px; color: #757575; text-decoration: none; }
+nav ul ul { background: #43bf43; border-radius: 0px; padding: 0; position: absolute; top: 100%; }
+nav ul ul li { float: none; position: relative; }
+nav ul ul li a { padding: 15px 40px; color: #fff; }	
+nav ul ul li a:hover { background: #25B424; }
+
+/* ---------------------- Formulários -------------------------------- */
+table, tr, td { margin: 20px auto 0; }
+table thead tr th { font-size: 18pt; letter-spacing: 3px; }
+table tbody tr td { text-align: left; }
+table tbody tr:last-child td { text-align: right; }
+table tbody tr:last-child td button { width: 100px; height: 30px; font-weight: bold; font-size: 12pt; }
+
+table tbody tr:last-child td button:hover { color: #43bf43; }
+
+form input[type=text] { 
+    border-color: #ccc;
+    transition: border-color 0.3s;
+    -o-transition: border-color 0.3s;
+    -ms-transition: border-color 0.3s;
+    -moz-transition: border-color 0.3s;
+    -webkit-transition: border-color 0.3s;
+}
+form input[type=text]:hover { border-color: #43bf43; }
+form input[type=text] { 
+    display: block;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    width: 300px;
+    height: 39px;
+    padding: 8px 10px;
+    outline: none;
+    border-width: 2px;
+    border-style: solid;
+    border-radius: 3px;
+    background-color: #fff;
+    font: 15px/19px 'Open Sans', Helvetica, Arial, sans-serif;
+}
+
+tr:nth-child(7) { vertical-align: top; }
